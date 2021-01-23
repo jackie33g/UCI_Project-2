@@ -50,6 +50,7 @@ ALTER TABLE "donut_chart" ADD CONSTRAINT "fk_donut_chart_ID" FOREIGN KEY("ID")
 REFERENCES "id_df" ("ID");
 
 
+-- creating the top 10 countries for donut chart
 create table public.donut_top10
 as
 select
@@ -69,7 +70,13 @@ select
 *
 from public.donut_top10
 
+Alter Table donut_top10
+Add id_num Serial
+ALTER TABLE donut_top10
+Add CONSTRAINT PK_dependency_num PRIMARY KEY (id_num)
 
+
+-- craeting the a single row per company_location to country_of... with the count of how many instances each pair had 
 ALTER TABLE dependency_chart 
 add value_num int NOT NULL DEFAULT 1 
 
@@ -83,4 +90,12 @@ from dependency_chart
 Group By company_location, country_of_bean_origin
 ;
 commit;
+
+select * from dependency_num
+
+Alter Table dependency_num
+Add id_num Serial
+
+ALTER TABLE dependency_num
+Add CONSTRAINT PK_dependency_num PRIMARY KEY (id_num)
 

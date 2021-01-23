@@ -69,3 +69,18 @@ select
 *
 from public.donut_top10
 
+
+ALTER TABLE dependency_chart 
+add value_num int NOT NULL DEFAULT 1 
+
+create table public.dependency_num
+as
+select
+company_location, 
+country_of_bean_origin,
+count(value_num) sum_num
+from dependency_chart
+Group By company_location, country_of_bean_origin
+;
+commit;
+

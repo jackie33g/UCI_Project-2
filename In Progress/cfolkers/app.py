@@ -21,7 +21,7 @@ def index():
     return {"hello": "world"}
 
 
-@app.route('/info', methods = ['GET'])
+@app.route('/dependency_chart', methods = ['GET'])
 def retrieve():
     information = dependency.query.all()
     results = [

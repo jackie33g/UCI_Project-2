@@ -1,5 +1,5 @@
-var svgWidth = 960;
-var svgHeight = 500;
+var svgWidth = 700;
+var svgHeight = 700;
 
 var margin = {
   top: 20,
@@ -22,7 +22,8 @@ var chartGroup = svg.append("g")
 
 // Import Data
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
-  console.log(info)
+  
+  console.log(info.results)
 });
 
       //     // Step 1: Parse Data/Cast as numbers

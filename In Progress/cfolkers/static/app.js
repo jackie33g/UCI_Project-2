@@ -108,3 +108,23 @@ var chartGroup = svg.append("g")
 
 
 
+var data = JSON.parse("{{results | tojson | safe}}");
+
+// var resultText = {
+//   "ID": ${results.ID}, 
+//   "company_location": ${results.company_location},
+//   "country_of_bean_origin": ${results.country_of_bean_origin}
+// };
+
+// var result = JSON.parse(resultText);
+// document.getElementById("results")
+//   .innerHTML = results.ID + " " + results.company_location + " " + results.country_of_bean_origin;
+
+// var retrieved = JSON.stringify(results)
+// document.getElementById("results")
+//   .innerHTML = results.ID + " " + results.company_location + " " + results.country_of_bean_origin;
+
+console.log(data);
+
+
+// use json as data = https://stackoverflow.com/questions/53088404/html-chart-js-deserialize-json-from-python-flask

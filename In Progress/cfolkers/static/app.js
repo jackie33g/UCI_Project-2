@@ -20,8 +20,10 @@ var svg = d3.select(".chart")
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-      // // Import Data
-      // d3.csv("hairData.csv").then(function(hairData) {
+// Import Data
+d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
+  console.log(info)
+});
 
       //     // Step 1: Parse Data/Cast as numbers
       //     // ==============================
@@ -108,7 +110,8 @@ var chartGroup = svg.append("g")
 
 
 
-var data = JSON.parse("{{results | tojson | safe}}");
+// var data = JSON.parse("{{results | tojson | safe}}");
+// var data = JSON.parse({"results": results});
 
 // var resultText = {
 //   "ID": ${results.ID}, 
@@ -124,7 +127,7 @@ var data = JSON.parse("{{results | tojson | safe}}");
 // document.getElementById("results")
 //   .innerHTML = results.ID + " " + results.company_location + " " + results.country_of_bean_origin;
 
-console.log(data);
+// console.log(data);
 
 
 // use json as data = https://stackoverflow.com/questions/53088404/html-chart-js-deserialize-json-from-python-flask

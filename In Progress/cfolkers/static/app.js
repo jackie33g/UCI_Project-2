@@ -22,6 +22,7 @@ var chartGroup = svg.append("g")
 
 // Import Data
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
+  
   console.log(info.results)
 });
 

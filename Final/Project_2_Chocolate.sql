@@ -49,3 +49,23 @@ REFERENCES "id_df" ("ID");
 ALTER TABLE "donut_chart" ADD CONSTRAINT "fk_donut_chart_ID" FOREIGN KEY("ID")
 REFERENCES "id_df" ("ID");
 
+
+create table public.donut_top10
+as
+select
+company_location,
+cocoa_percent,
+count(company_location) count_location,
+round(avg(rating),3) rating
+from public.donut_chart
+where cocoa_percent='70'
+group by company_location,
+cocoa_percent
+ORDER BY count(company_location) DESC
+LIMIT 10;
+commit;
+
+select
+*
+from public.donut_top10
+

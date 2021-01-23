@@ -1,24 +1,24 @@
-// var svgWidth = 960;
-// var svgHeight = 500;
+var svgWidth = 960;
+var svgHeight = 500;
 
-// var margin = {
-//   top: 20,
-//   right: 40,
-//   bottom: 60,
-//   left: 100
-// };
+var margin = {
+  top: 20,
+  right: 40,
+  bottom: 60,
+  left: 100
+};
 
-// var width = svgWidth - margin.left - margin.right;
-// var height = svgHeight - margin.top - margin.bottom;
+var width = svgWidth - margin.left - margin.right;
+var height = svgHeight - margin.top - margin.bottom;
 
-// // Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
-// var svg = d3.select(".chart")
-//   .append("svg")
-//   .attr("width", svgWidth)
-//   .attr("height", svgHeight);
+// Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
+var svg = d3.select(".chart")
+  .append("svg")
+  .attr("width", svgWidth)
+  .attr("height", svgHeight);
 
-// var chartGroup = svg.append("g")
-//   .attr("transform", `translate(${margin.left}, ${margin.top})`);
+var chartGroup = svg.append("g")
+  .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
       // // Import Data
       // d3.csv("hairData.csv").then(function(hairData) {
@@ -102,32 +102,34 @@
       //       .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
       //       .attr("class", "axisText")
       //       .text("Hair Metal Band Hair Length (inches)");
-      //   }).catch(function(error) {
-      //     console.log(error);
-      //   });
+        // }).catch(function(error) {
+        //   console.log(error);
+        // });
 
 
-// Connect to postgresSQL
-// https://www.youtube.com/watch?v=ufdHsFClAk0 from 5:00 min // 12:30 min
-const {Client} = require('pg')
-const connectionString = 'postgres:postgres@localhost:5432/Chocolate_DB';
+              // Connect to postgresSQL
+              // https://www.youtube.com/watch?v=ufdHsFClAk0 from 5:00 min // 12:30
+              // const {Client} = require('pg')
+              // const connectionString = 'postgres:postgres@localhost:5432/Chocolate_DB';
 
-const client = new Client({
-  connectionString:connectionString
-});
+              // const client = new Client({
+              //   connectionString:connectionString
+              // });
 
-client.connect()
-  .then(()=>console.log("Connected Successfully"))
-  .catch((e=>console.log))
-  .finally(()=>client.end())
+              // client.connect()
 
-      // // var dependencyInfo = [];
+              // client.query('SELECT * from dependency_chart',(err,res)=>{
+              //   console.log(err,res)
+              //   client.end()
+              // });
 
-      // client.query('SELECT * from dependency_chart',(err,res)=>{
-      //   console.log(err,res)
-      //   // dependencyInfo.push()
-      //   client.end()
-      // });
+              // // var dependencyInfo = [];
+
+              // client.query('SELECT * from dependency_chart',(err,res)=>{
+              //   console.log(err,res)
+              //   // dependencyInfo.push()
+              //   client.end()
+              // });
 
 
 

@@ -1,0 +1,36 @@
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+# from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello():
+    return {"hello": "world"}
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/Chocolate_DB"
+db = SQLAlchemy(app)
+
+class dependency(db.Model):
+    __tablename__ = "dependency_chart"
+    ID = db.Column('ID', db.integer, primary_key=True)
+    company_location = db.Column('company_location', db.Unicode)
+    country_of_bean_origin = db.Column('country_of_bean_origin', db.Unicode)
+print(dependency)
+
+@app.route('/dependency_chart')
+# def retrieve_info():
+#     return (
+#         infos = dependency.query.all()
+#         results = [
+#             {
+#                 "ID": info.ID,
+#                 "company_location": info.company_location,
+#                 "country_of_bean_origin": info.country_of_bean_origin
+#             } for info in infos]
+#     )

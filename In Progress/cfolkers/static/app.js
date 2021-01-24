@@ -1,11 +1,11 @@
-var svgWidth = 700;
-var svgHeight = 700;
+var svgWidth = 1000;
+var svgHeight = 1000;
 
 var margin = {
   top: 20,
   right: 40,
-  bottom: 60,
-  left: 100
+  bottom: 40,
+  left: 50
 };
 
 var width = svgWidth - margin.left - margin.right;
@@ -20,115 +20,84 @@ var svg = d3.select(".chart")
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+
+                      // // Lable for matrix components 
+                      // var metric = 'Country of Origin', // country_of_bean_origin owner
+                      //     attr1 = 'Country of Manufacter', // company_location
+                      //     attr2 = 'Number'; // value_num
+
+                      // var elements = [attr1, attr2, metric];
+
+
 // Import Data
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
+  var array = info.results;
+  // console.log(array)
+
+  // Transform data for matrix!!!! 
+  // https://bl.ocks.org/curran/8c5bb1e0dd8ea98695d28c8a0ccfc533
+  function generateMatrix(data){
+    var nameToIndex = {},
+        names = [],
+        matrix = [],
+        n = 0, i, j;
+
+    function recordName(name){
+      if( !(name in nameToIndex) ){
+        nameToIndex[name] = n++;
+        names.push(name);
+      }
+    }
+
+    data.forEach(function (d){
+      recordName(d.origin);
+      recordName(d.destination);
+    });
+
+    for(i = 0; i < n; i++){
+      matrix.push([]);
+      for(j = 0; j < n; j++){
+        matrix[i].push(0);
+      }
+    }
+
+    data.forEach(function (d){
+      i = nameToIndex[d.origin];
+      j = nameToIndex[d.destination];
+      matrix[j][i] = d.count;
+    });
+
+    matrix.names = names;
+
+    return matrix;
+  }
+
+  var matrix = generateMatrix(array);
+  console.log(matrix)
+    
+
+                        // // https://sdk.gooddata.com/gooddata-js/example/chord-chart-to-analyze-sales
+                        // var transformData = function(dataResults) {
+                        //     data = array.results
+                        //     length = data.length,
+                        //     attr1 = data.company_location; // 
+                        // //     // attr2 = headers[1],
+                        // //     // metric = headers[2],
+                        // //     // attr1Keys = {},
+                        // //     // attr2Keys = {},
+                        // //     // matrix = [];
+
+                        //     console.log("Length "+length)
+                        //     console.log(attr1)
+                        // };
+
+                        // transformData(info) //so runs function
+
+  // CHART STARTS HERE
+  // https://jyu-theartofml.github.io/posts/circos_plot &
+  // https://github.com/fzaninotto/DependencyWheel/blob/master/js/d3.dependencyWheel.js 
+
   
-  console.log(info.results)
+  // d3.chart.dependencywheel = function(options) {
+  // }
 });
-
-      //     // Step 1: Parse Data/Cast as numbers
-      //     // ==============================
-      //     hairData.forEach(function(data) {
-      //       data.hair_length = +data.hair_length;
-      //       data.num_hits = +data.num_hits;
-      //     });
-
-      //     // Step 2: Create scale functions
-      //     // ==============================
-      //     var xLinearScale = d3.scaleLinear()
-      //       .domain([20, d3.max(hairData, d => d.hair_length)])
-      //       .range([0, width]);
-
-      //     var yLinearScale = d3.scaleLinear()
-      //       .domain([0, d3.max(hairData, d => d.num_hits)])
-      //       .range([height, 0]);
-
-      //     // Step 3: Create axis functions
-      //     // ==============================
-      //     var bottomAxis = d3.axisBottom(xLinearScale);
-      //     var leftAxis = d3.axisLeft(yLinearScale);
-
-      //     // Step 4: Append Axes to the chart
-      //     // ==============================
-      //     chartGroup.append("g")
-      //       .attr("transform", `translate(0, ${height})`)
-      //       .call(bottomAxis);
-
-      //     chartGroup.append("g")
-      //       .call(leftAxis);
-
-      //     // Step 5: Create Circles
-      //     // ==============================
-      //     var circlesGroup = chartGroup.selectAll("circle")
-      //     .data(hairData)
-      //     .enter()
-      //     .append("circle")
-      //     .attr("cx", d => xLinearScale(d.hair_length))
-      //     .attr("cy", d => yLinearScale(d.num_hits))
-      //     .attr("r", "15")
-      //     .attr("fill", "pink")
-      //     .attr("opacity", ".5");
-
-      //     // Step 6: Initialize tool tip
-      //     // ==============================
-      //     var toolTip = d3.tip()
-      //       .attr("class", "tooltip")
-      //       .offset([80, -60])
-      //       .html(function(d) {
-      //         return (`${d.rockband}<br>Hair length: ${d.hair_length}<br>Hits: ${d.num_hits}`);
-      //       });
-
-      //     // Step 7: Create tooltip in the chart
-      //     // ==============================
-      //     chartGroup.call(toolTip);
-
-      //     // Step 8: Create event listeners to display and hide the tooltip
-      //     // ==============================
-      //     circlesGroup.on("click", function(data) {
-      //       toolTip.show(data, this);
-      //     })
-      //       // onmouseout event
-      //       .on("mouseout", function(data, index) {
-      //         toolTip.hide(data);
-      //       });
-
-      //     // Create axes labels
-      //     chartGroup.append("text")
-      //       .attr("transform", "rotate(-90)")
-      //       .attr("y", 0 - margin.left + 40)
-      //       .attr("x", 0 - (height / 2))
-      //       .attr("dy", "1em")
-      //       .attr("class", "axisText")
-      //       .text("Number of Billboard 100 Hits");
-
-      //     chartGroup.append("text")
-      //       .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-      //       .attr("class", "axisText")
-      //       .text("Hair Metal Band Hair Length (inches)");
-        // }).catch(function(error) {
-        //   console.log(error);
-        // });
-
-
-
-// var data = JSON.parse("{{results | tojson | safe}}");
-// var data = JSON.parse({"results": results});
-
-// var resultText = {
-//   "ID": ${results.ID}, 
-//   "company_location": ${results.company_location},
-//   "country_of_bean_origin": ${results.country_of_bean_origin}
-// };
-
-// var result = JSON.parse(resultText);
-// document.getElementById("results")
-//   .innerHTML = results.ID + " " + results.company_location + " " + results.country_of_bean_origin;
-
-// var retrieved = JSON.stringify(results)
-// document.getElementById("results")
-//   .innerHTML = results.ID + " " + results.company_location + " " + results.country_of_bean_origin;
-
-// console.log(data);
-
-
-// use json as data = https://stackoverflow.com/questions/53088404/html-chart-js-deserialize-json-from-python-flask

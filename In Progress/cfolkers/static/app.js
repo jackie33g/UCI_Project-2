@@ -1,41 +1,158 @@
-var svgWidth = 1000;
-var svgHeight = 1000;
+// Reference for chart:  https://bl.ocks.org/curran/8c5bb1e0dd8ea98695d28c8a0ccfc533
 
-var margin = {
-  top: 20,
-  right: 40,
-  bottom: 40,
-  left: 50
-};
+// Parameters for chart (like this way better)
+var width = 960,
+  height = 960,
+  outerPadding = 100,
+  labelPadding = 5,
+  chordPadding = 0.03,
+  arcThickness = 30,
+  opacity = 0.5,
+  fadedOpacity = 0.02,
+  transitionDuration = 400,
+  outerRadius = width / 2 - outerPadding,
+  innerRadius = outerRadius - arcThickness,
+  valueFormat = d3.format(",");
 
-var width = svgWidth - margin.left - margin.right;
-var height = svgHeight - margin.top - margin.bottom;
-
-// Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
-var svg = d3.select(".chart")
-  .append("svg")
-  .attr("width", svgWidth)
-  .attr("height", svgHeight);
-
-var chartGroup = svg.append("g")
-  .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-
-                      // // Lable for matrix components 
-                      // var metric = 'Country of Origin', // country_of_bean_origin owner
-                      //     attr1 = 'Country of Manufacter', // company_location
-                      //     attr2 = 'Number'; // value_num
-
-                      // var elements = [attr1, attr2, metric];
-
+var svg = d3.select(".chart").append("svg")
+  .attr("width", width)
+  .attr("height", height)
+  g = svg.append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"),
+    ribbonsG = g.append("g"),
+    groupsG = g.append("g");
 
 // Import Data
-d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
-  var array = info.results;
+d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
+  var array = data.results;
   // console.log(array)
 
+  // Chart starts here
+  // D3 layouts, shapes and scales.
+  var ribbon = d3.ribbon()
+    .radius(innerRadius),
+  chord = d3.chord()
+    .padAngle(chordPadding)
+    .sortSubgroups(d3.descending),
+  arc = d3.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius),
+  color = d3.scaleOrdinal()
+    .range(d3.schemeCategory20);
+  
+  var popoverOptions = {
+    html : true,
+    template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><div class="popover-content"></div></div>'
+  };
+
+  // Renders the given data as a chord diagram.
+  function render(data){
+
+    var matrix = generateMatrix(data),
+        chords = chord(matrix);
+
+    color.domain(matrix.map(function (d, i){
+      return i;
+    }));
+
+    // Render the ribbons.
+    ribbonsG.selectAll("path")
+        .data(chords)
+      .enter().append("path")
+        .attr("class", "ribbon")
+        .attr("d", ribbon)
+        .style("fill", function(d) {
+          return color(d.source.index);
+        })
+        .style("stroke", function(d) {
+          return d3.rgb(color(d.source.index)).darker();
+        })
+        .style("opacity", opacity)
+        .on("mouseenter", function(d){
+          var src = matrix.names[d.source.index];
+          var dest = matrix.names[d.target.index];
+          popoverOptions.content = [
+            `<p> ${dest} to ${src}: ${d.source.value}</p>`,
+          ].join();
+          $(this).popover(popoverOptions);
+          $(this).popover("show");
+        }) 
+        .on("mouseleave", function (d){
+          $(this).popover("hide");
+        })
+
+    // Scaffold the chord groups.
+    var groups = groupsG
+      .selectAll("g")
+        .data(chords.groups)
+      .enter().append("g");
+
+    // Render the chord group arcs.
+    groups
+      .append("path")
+        .attr("class", "arc")
+        .attr("d", arc)
+        .style("fill", function(group) {
+          return color(group.index);
+        })
+        .style("stroke", function(group) {
+          return d3.rgb(color(group.index)).darker();
+        })
+        .style("opacity", opacity)
+        .call(groupHover);
+
+    // Render the chord group labels.
+    var angle = d3.local(),
+        flip = d3.local();
+    groups
+      .append("text")
+        .each(function(d) {
+          angle.set(this, (d.startAngle + d.endAngle) / 2)
+          flip.set(this, angle.get(this) > Math.PI);
+        })
+        .attr("transform", function(d) {
+          return [
+            "rotate(" + (angle.get(this) / Math.PI * 180 - 90) + ")",
+            "translate(" + (outerRadius + labelPadding) + ")",
+            flip.get(this) ? "rotate(180)" : ""
+          ].join("");
+        })
+        .attr("text-anchor", function(d) {
+          return flip.get(this) ? "end" : "start";
+        })
+        .text(function(d) {
+          return matrix.names[d.index];
+        })
+        .attr("alignment-baseline", "central")
+        .style("font-family", '"Helvetica Neue", Helvetica')
+        .style("font-size", "10pt")
+        .style("cursor", "default")
+        .call(groupHover);
+  }
+
+  // Sets up hover interaction to highlight a chord group.
+  // Used for both the arcs and the text labels.
+  function groupHover(selection){
+    selection
+      .on("mouseover", function (group){
+        g.selectAll(".ribbon")
+            .filter(function(ribbon) {
+              return (
+                (ribbon.source.index !== group.index) &&
+                (ribbon.target.index !== group.index)
+              );
+            })
+          .transition().duration(transitionDuration)
+            .style("opacity", fadedOpacity);
+      })
+      .on("mouseout", function (){
+        g.selectAll(".ribbon")
+          .transition().duration(transitionDuration)
+            .style("opacity", opacity);
+      });
+  }
+
   // Transform data for matrix!!!! 
-  // https://bl.ocks.org/curran/8c5bb1e0dd8ea98695d28c8a0ccfc533
   function generateMatrix(data){
     var nameToIndex = {},
         names = [],
@@ -71,33 +188,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
 
     return matrix;
   }
-
-  var matrix = generateMatrix(array);
-  console.log(matrix)
-    
-
-                        // // https://sdk.gooddata.com/gooddata-js/example/chord-chart-to-analyze-sales
-                        // var transformData = function(dataResults) {
-                        //     data = array.results
-                        //     length = data.length,
-                        //     attr1 = data.company_location; // 
-                        // //     // attr2 = headers[1],
-                        // //     // metric = headers[2],
-                        // //     // attr1Keys = {},
-                        // //     // attr2Keys = {},
-                        // //     // matrix = [];
-
-                        //     console.log("Length "+length)
-                        //     console.log(attr1)
-                        // };
-
-                        // transformData(info) //so runs function
-
-  // CHART STARTS HERE
-  // https://jyu-theartofml.github.io/posts/circos_plot &
-  // https://github.com/fzaninotto/DependencyWheel/blob/master/js/d3.dependencyWheel.js 
-
-  
-  // d3.chart.dependencywheel = function(options) {
-  // }
+  // console.log(matrix) 
+  render(array);
 });
+

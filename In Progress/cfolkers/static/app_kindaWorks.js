@@ -33,4 +33,38 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
   }
   console.log(toChartArray)
 
+  Highcharts.chart('container', {
+
+    title: {
+        text: 'Flow of Chocolate From Production to Manufater Country'
+    },
+
+    accessibility: {
+        point: {
+            valueDescriptionFormat: '{index}. From {point.from} to {point.to}: {point.weight}.'
+        }
+    },
+
+    series: [{
+        keys: ['to', 'from', 'weight'],
+        data: toChartArray,
+        type: 'dependencywheel',
+        name: 'Flow of Cacao',
+        dataLabels: {
+            rotation: 270,
+            // align: middle,
+            color: '#333',
+            // textPath: {
+            //     enabled: true,
+            //     attributes: {
+            //         dy: 5
+            //     },
+            // },
+            distance: 10
+        },
+        size: '95%'
+    }]
+
+});
+
 });

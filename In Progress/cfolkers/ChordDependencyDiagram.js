@@ -43,12 +43,12 @@
 
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
   
-  console.log(info.results)
+    console.log(info.results)
 
-// data = Array.from(d3.rollup((await FileAttachment("flare.json").json())
-//     .flatMap(({name: source, imports}) => imports.map(target => [rename(source), rename(target)])),
-//     ({0: [source, target], length: value}) => ({source, target, value}), link => link.join())
-//     .values())
+    data = Array.from(d3.rollup(info
+        .flatMap(({name: source, imports}) => imports.map(target => [rename(source), rename(target)])),
+        ({0: [source, target], length: value}) => ({source, target, value}), link => link.join())
+        .values())
 
 // rename = name => name.substring(name.indexOf(".") + 1, name.lastIndexOf("."))
 

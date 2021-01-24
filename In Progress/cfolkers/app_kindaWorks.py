@@ -9,11 +9,11 @@ db = SQLAlchemy(app)
 
 # https://stackabuse.com/using-sqlalchemy-with-flask-and-postgresql/ 
 class dependency(db.Model):
-    __tablename__ = 'dependency_chart'
-    ID = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'dependency_num'
+    id_num = db.Column(db.Integer, primary_key=True)
     company_location = db.Column(db.String())
     country_of_bean_origin = db.Column(db.String())
-    value_num = db.Column(db.Integer)
+    sum_num = db.Column(db.Integer)
 
 @app.route('/')
 def index():
@@ -25,9 +25,9 @@ def retrieve():
     information = dependency.query.all()
     results = [
         {
-            "origin": info.country_of_bean_origin,
-            "destination": info.company_location,
-            "count": info.value_num
+            "company_location": info.company_location,
+            "country_of_bean_origin": info.country_of_bean_origin,
+            "sum_num": info.sum_num
 
         } for info in information]
     return {"results": results} # ----> puts resutls in json in flask

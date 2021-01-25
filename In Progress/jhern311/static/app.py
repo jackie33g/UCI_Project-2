@@ -11,8 +11,8 @@ db = SQLAlchemy(app)
 
 # https://stackabuse.com/using-sqlalchemy-with-flask-and-postgresql/ 
 class donut(db.Model):
-    __tablename__ = 'donut_chart'
-    ID = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'donut_top10'
+    id_num = db.Column(db.Integer, primary_key=True)
     company_location = db.Column(db.String())
     cocoa_percent = db.Column(db.Integer())
     rating = db.Column(db.Float)
@@ -22,13 +22,13 @@ def index():
     return {"hello": "world"}
 
 
-@app.route('/donut_chart', methods = ['GET'])
+@app.route('/donut_top10', methods = ['GET'])
 # @cross_origin(origin='localhost', headers=['Content - Type', 'Authorization'])
 def retrieve():
     information = donut.query.all()
     results = [
         {
-            "ID": info.ID,
+            "ID": info.id_num,
             "company_location": info.company_location,
             "cocoa_percent": info.cocoa_percent,
             "rating" : info.rating

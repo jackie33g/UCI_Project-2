@@ -72,7 +72,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
           var src = matrix.names[d.source.index];
           var dest = matrix.names[d.target.index];
           popoverOptions.content = [
-            `<p> ${dest} to ${src}: ${d.source.value}</p>`,
+            `<p> ${dest} to ${src}: <br>${d.source.value}</p>`,
           ].join();
           $(this).popover(popoverOptions);
           $(this).popover("show");

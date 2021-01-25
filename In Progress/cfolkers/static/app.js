@@ -40,9 +40,9 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
   color = d3.scaleOrdinal()
     .range(d3.schemeCategory20);
   
-  var popoverOptions = {
+  var tooltipOptions = {
     html : true,
-    template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><div class="popover-content"></div></div>'
+    template: '<div class="title" role="tooltip"><div class="tooltip-content"></div></div>'
   };
 
   // Renders the given data as a chord diagram.
@@ -58,7 +58,8 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
     // Render the ribbons.
     ribbonsG.selectAll("path")
         .data(chords)
-      .enter().append("path")
+      .enter()
+        .append("path")
         .attr("class", "ribbon")
         .attr("d", ribbon)
         .style("fill", function(d) {
@@ -68,18 +69,15 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
           return d3.rgb(color(d.source.index)).darker();
         })
         .style("opacity", opacity)
-        .on("mouseenter", function(d){
-          var src = matrix.names[d.source.index];
-          var dest = matrix.names[d.target.index];
-          popoverOptions.content = [
-            `<p> ${dest} to ${src}: ${d.source.value}</p>`,
-          ].join();
-          $(this).popover(popoverOptions);
-          $(this).popover("show");
-        }) 
-        .on("mouseleave", function (d){
-          $(this).popover("hide");
-        })
+        .append("title")
+          .attr("class", "tooltip-content")
+          .text(textFunction);
+
+    // Function for text for tooltip.
+    function textFunction(d){
+      var src = matrix.names[d.source.index];
+      var dest = matrix.names[d.target.index];
+      return `${dest} → ${src}: ${d.source.value}`}
 
     // Scaffold the chord groups.
     var groups = groupsG
@@ -101,7 +99,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
         .style("opacity", opacity)
         .call(groupHover);
 
-    // Render the chord group labels.
+    // Render the chord group labels and flip.
     var angle = d3.local(),
         flip = d3.local();
     groups
@@ -131,7 +129,6 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
   }
 
   // Sets up hover interaction to highlight a chord group.
-  // Used for both the arcs and the text labels.
   function groupHover(selection){
     selection
       .on("mouseover", function (group){

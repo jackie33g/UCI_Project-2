@@ -326,3 +326,11 @@
                 .style("opacity", opacity);
           });
       }
+
+
+          // }
+        // .append("title").text(function(d){
+        //   var src = matrix.names[d.source.index];
+        //   var dest = matrix.names[d.target.index];
+        //   return dest + " → " + src + ": " + d.source.value
+        //   });

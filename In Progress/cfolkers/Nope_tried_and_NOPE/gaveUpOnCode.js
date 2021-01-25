@@ -334,3 +334,65 @@
         //   var dest = matrix.names[d.target.index];
         //   return dest + " → " + src + ": " + d.source.value
         //   });
+
+
+          // var tooltipOptions = {
+  //   html : true,
+  //   template: '<div class="title" role="tooltip"><div class="tooltip-content"></div></div>'
+  // };
+
+
+
+
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.2/js/tether.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script> -->
+
+
+  <!-- FOR APP_KINDAWORKS -->
+  <!-- <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/sankey.js"></script>
+  <script src="https://code.highcharts.com/modules/dependency-wheel.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script> -->
+
+
+
+  <!-- FOR APP_KINDA WORKS -->
+  <!-- <figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+      Chart showing a dependency wheel, where each point consists of multiple
+      weighted links to other points. This chart type is often used to
+      visualize data flow, and can be a striking way to illustrate
+      relationships in data.
+    </p>
+  </figure> -->
+
+
+  <p class="tt">Lorem ipsum dolor sit amet <a href="#" data-tooltip="This is a pure CSS tooltip">hover over this link</a> 
+  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam, <a href="#" data-tooltip="This is a pure CSS tooltip">hover over this link which is longer than the other</a> quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+
+
+.tooltip {
+  display: inline-block;
+  position: relative;
+  /* position: absolute;			
+  text-align: center;			
+  width: auto;					
+  height: auto;					
+  padding: 2px;		 */
+  color: black;		
+  font: 12px sans-serif;		
+  background-color: white;		
+  pointer-events: none;		
+  outline: none;
+  /* padding: 5;
+  height: 20px;
+  left: 5;
+
+  font-size: 12px;
+  position: relative; */
+}

@@ -1,11 +1,14 @@
-.tooltip-content {
-    position: absolute;			
-    text-align: center;			
-    width: 150px;				
-    height: auto;					
-    padding: 2px;		
+.tooltip {
+    display: none;
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 2px;
+    font: 12px sans-serif;
+    text-align: center;
+    background: white;
+    border: 0;
+    border-radius: 10px;
     color: black;		
-    font: 12px sans-serif;		
-    background-color: white;		
-    pointer-events: none;		
-}
+
+  }

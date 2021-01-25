@@ -7,9 +7,9 @@ var width = 960,
   labelPadding = 5,
   chordPadding = 0.03,
   arcThickness = 20,
-  opacity = 0.5,
+  opacity = 0.6,
   fadedOpacity = 0.02,
-  transitionDuration = 1000,
+  transitionDuration = 400,
   outerRadius = width / 2 - outerPadding,
   innerRadius = outerRadius - arcThickness,
   valueFormat = d3.format(",");
@@ -39,11 +39,6 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
     .outerRadius(outerRadius),
   color = d3.scaleOrdinal()
     .range(d3.schemeCategory20);
-  
-  var tooltipOptions = {
-    html : true,
-    template: '<div class="title" role="tooltip"><div class="tooltip-content"></div></div>'
-  };
 
   // Renders the given data as a chord diagram.
   function render(data){
@@ -54,7 +49,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
     color.domain(matrix.map(function (d, i){
       return i;
     }));
-
+    
     // Render the ribbons.
     ribbonsG.selectAll("path")
         .data(chords)
@@ -69,10 +64,15 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
           return d3.rgb(color(d.source.index)).darker();
         })
         .style("opacity", opacity)
+        // .call(ribbonHover)
         .append("title")
-          .attr("class", "tooltip-content")
+          .attr("class", "tooltip")
+          .attr("role", "tooltip")
+          // .attr("style", "background-color: white")
           .text(textFunction);
-
+        // .append("a")
+        // .attr("data-tooltip", textFunction);
+  
     // Function for text for tooltip.
     function textFunction(d){
       var src = matrix.names[d.source.index];
@@ -148,6 +148,25 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
             .style("opacity", opacity);
       });
   }
+
+//   function ribbonHover(selection){
+//     selection
+//       .on("mouseover", function (group){
+//         g.selectAll(".ribbon")
+//             .filter(function(ribbon) {
+//               return (
+//                 (ribbon.source.index !== group.index) &&
+//                 (ribbon.target.index !== group.index)
+//               );
+//             })
+//           .transition().duration(transitionDuration)
+//       })
+//       .on("mouseout", function (){
+//         g.selectAll(".ribbon")
+//           .transition().duration(transitionDuration)
+// ;
+//       });
+//   }
 
   // Transform data for matrix!!!! 
   function generateMatrix(data){

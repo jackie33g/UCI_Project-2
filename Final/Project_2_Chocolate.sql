@@ -88,6 +88,7 @@ country_of_bean_origin,
 count(value_num) sum_num
 from dependency_chart
 Group By company_location, country_of_bean_origin
+ORDER BY company_location, country_of_bean_origin
 ;
 commit;
 

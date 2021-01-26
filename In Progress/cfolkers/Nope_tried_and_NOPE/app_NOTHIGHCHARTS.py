@@ -25,9 +25,9 @@ def retrieve():
     information = dependency.query.all()
     results = [
         {
-            "company_location": info.company_location,
-            "country_of_bean_origin": info.country_of_bean_origin,
-            "sum_num": info.sum_num
+            "origin": info.country_of_bean_origin,
+            "destination": info.company_location,
+            "count": info.sum_num
 
         } for info in information]
     return {"results": results} # ----> puts resutls in json in flask

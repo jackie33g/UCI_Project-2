@@ -28,18 +28,16 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(info) {
         type: 'dependencywheel',
         name: 'Flow of Cacao',
         dataLabels: {
-                            // rotation: 270,
-                            // align: middle,
             color: '#333',
             textPath: {
-                enabled: true,
+                enabled: false,
                 attributes: {
                     dy: 5
                 },
             },
             distance: 10
         },
-        size: '95%'
+        size: '60%'
     }]
 
 });

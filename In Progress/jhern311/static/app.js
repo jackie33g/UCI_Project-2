@@ -26,6 +26,7 @@ d3.json("/donut_top10").then(function(info) {
 });
 
 // Uncomment to style it like Apple Watch
+<<<<<<< HEAD
 
 // if (!Highcharts.theme) {
 //     Highcharts.setOptions({
@@ -46,6 +47,28 @@ d3.json("/donut_top10").then(function(info) {
 //     });
 // }
 
+=======
+/*
+if (!Highcharts.theme) {
+    Highcharts.setOptions({
+        chart: {
+            backgroundColor: 'black'
+        },
+        colors: ['#F62366', '#9DFF02', '#0CCDD6'],
+        title: {
+            style: {
+                color: 'silver'
+            }
+        },
+        tooltip: {
+            style: {
+                color: 'silver'
+            }
+        }
+    });
+}
+// */
+>>>>>>> f2856df209260bb2d6ab45d6f8b602b6cd0158a7
 
 /**
  * In the chart render event, add icons on top of the circular shapes

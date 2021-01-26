@@ -15,7 +15,7 @@ var width = 750,
   innerRadius = outerRadius - arcThickness,
   valueFormat = d3.format(",");
 
-var svg = d3.select(".chart").append("svg")
+var svg = d3.select(".dependency").append("svg")
   .attr("width", width)
   .attr("height", height)
   g = svg.append("g")

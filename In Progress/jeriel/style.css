@@ -1,0 +1,19 @@
+body {
+  background-image: url(chocolate-background.jpg);
+  color: white;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+}
+
+img {
+  box-shadow: 10px 10px 5px rgb(170, 114, 18);
+}
+
+
+body.dark {
+  background: black;
+  color: white;
+}

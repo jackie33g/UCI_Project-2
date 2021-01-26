@@ -15,7 +15,7 @@
     margin: 10px auto;
     text-align: center;
     width: 100%;
-    max-width: auto; /*THIS RIGHT HERE*/
+    max-width: auto; 
 }
 .highcharts-data-table caption {
     padding: 1em 0;
@@ -35,3 +35,5 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 } */
+
+

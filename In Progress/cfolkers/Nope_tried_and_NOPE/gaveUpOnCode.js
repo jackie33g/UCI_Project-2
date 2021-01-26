@@ -396,3 +396,32 @@
   font-size: 12px;
   position: relative; */
 }
+
+
+/* .popover-content {
+    display: none;
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 2px;
+    font: 12px sans-serif;
+    text-align: center;
+    background: white;
+    border: 0;
+    border-radius: 10px;
+    color: black;		
+
+  } */
+
+
+/* .tooltip {
+    padding: 5;
+    outline: none;
+    border: 1px soild #cdcdcd;
+    border-color: rgba(0,0,0,.15);
+    font-size: 12px;
+    color: black;
+    align-content: center;
+    background-color: white;
+    position: relative;
+ }  */

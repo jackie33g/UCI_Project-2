@@ -19,7 +19,9 @@ class donut(db.Model):
 
 @app.route('/')
 def index():
-    return {"hello": "world"}
+    # return {"hello": "world"}
+    webpage = render_template("index.html")
+    return webpage
 
 
 @app.route('/donut_top10', methods = ['GET'])

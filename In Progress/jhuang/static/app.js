@@ -23,7 +23,7 @@ var chartGroup = svg.append("g")
 ///Import Data
 d3.json("http://127.0.0.1:5000/scatterplot_chart").then(function(info) {
 
-  console.log(info)
+  // console.log(info)
 // Add X axis
 
 var xTicks = [];
@@ -64,21 +64,34 @@ info.results.forEach(function(data,i){
  data.company_location_index = company_location_index[i];
 })
 
-console.log(info)
+// console.log(info)
 
 
 var x = d3.scaleLinear()
 .domain([-4,ticksData[0].index.length+1])
 .range([ 0, width*1 ]);
 
+
+// axis(d3.scalePoint().domain([..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"]))
+//   .tickValues([..."AEIOUY"])
+//   .render()
+
 var xAxis = svg.append("g")
 .attr("transform", "translate(0," + height + ")")
 .call(d3.axisBottom(x))
+// .call(d3.axisBottom(x).tickValues(ticksData[0].index).tickFormat((d,i)=>ticksData[0].country[i]))
 // .selectAll("text")
 //     .attr("transform", "translate(-10,10)rotate(-90)")
 //     .style("text-anchor", "end")
 //     .style("font-size", 12)
 //     .style("fill", "#69a3b2")
+
+// xAxis.selectAll(".tick text")
+//      .attr("transform", "translate(-10,10)rotate(-90)")
+//          .style("text-anchor", "end")
+//          .style("font-size", 12)
+//          .style("fill", "#69a3b2")
+    
 
     svg.append("text")
     .attr("text-anchor", "end")
@@ -115,14 +128,25 @@ var clip = svg.append("defs").append("svg:clipPath")
   .attr("y", 0);
 
 // Color scale: give me a specie name, I return a color
+var colorLabel = ["000000","#8C0044","#880000","#A42D00","#BB5500","#886600","#888800",
+"#668800","#227700","#008800","#008844","#008866","#008888","#007799","#003377",
+"#000088","#220088","#3A0088","#550088","#660077","#770077"]
+
+
+
 var color = d3.scaleOrdinal()
-.domain([0,ticksData[0].index.length])
-.range([ "#111111","#ffffff"])
+.domain(ticksData[0].country)
+.range(colorLabel)
+
+// console.log(ticksData[0].country)
 
 // Add brushing
 var brush = d3.brushX()                 // Add the brush feature using the d3.brush function
   .extent( [ [0,0], [width,height] ] ) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
   .on("end", updateChart) // Each time the brush selection changes, trigger the 'updateChart' function
+
+
+
 
 // Create the scatter variable: where both the circles and the brush take place
 var scatter = svg.append('g')
@@ -139,8 +163,8 @@ scatter
   .attr("cx", function (d) { return x(d.company_location_index); } )
   .attr("cy", function (d) { return y(d.rating); } )
   .attr("r", 5)
-  .style("fill", function (d) { return color(d.country_of_bean_origin) } )
-  .style("opacity", 0.5)
+  // .style("fill", function (d) { return color(d.company_location) } )
+  .style("opacity", 0.15)
 
 // Add the brushing
 scatter
@@ -160,28 +184,39 @@ extent = d3.event.selection
 // If no selection, back to initial coordinate. Otherwise, update X axis domain
 if(!extent){
   if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
-  x.domain([ -4,xTicksIndex.length+1])
+  x.domain([ -4,xTicksIndex.length+1]).range([ 0, width*1 ]);
 }else{
   x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
   scatter.select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
 }
 
 // Update axis and circle position
+
 xAxis.transition().duration(1000)
 .call(d3.axisBottom(x).tickValues(ticksData[0].index).tickFormat((d,i)=>ticksData[0].country[i]))
-.selectAll("text")
+.selectAll(".tick text")
 .attr("transform", "translate(-10,10)rotate(-90)")
     .style("text-anchor", "end")
     .style("font-size", 12)
     .style("fill", "#69a3b2")
+
+ 
 
 scatter
   .selectAll("circle")
   .transition().duration(1000)
   .attr("cx", function (d) { return x(d.company_location_index); } )
   .attr("cy", function (d) { return y(d.rating); } )
+  .style("fill", function (d) { return color(d.company_location) } )
+  .attr("r", 8)
+
+
+
+
+
 
 }
+
 
 
 

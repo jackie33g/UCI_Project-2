@@ -30,7 +30,7 @@ svg.append("text")
   .attr("y", 43)
   .attr("text-anchor", "middle")
   .style("font-size", "30px")
-  .text("Flow of Cacao Between Orgin and Manufacteure Countries");
+  .text("Flow of Cacao Between Orgin and Manufacture Countries");
 
 
 

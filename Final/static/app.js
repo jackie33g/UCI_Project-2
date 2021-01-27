@@ -422,7 +422,7 @@ Highcharts.chart('container', {
   },
 
   title: {
-      text: "Top 10 Countries' 70% Cocao Bar Average Ratings",
+      text: "Top 10 Countries' 70% Cacao Bar Average Ratings",
       style: {
           fontSize: '28px'
       }

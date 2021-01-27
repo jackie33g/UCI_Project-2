@@ -2,8 +2,8 @@
 // Reference for chart:  https://bl.ocks.org/curran/8c5bb1e0dd8ea98695d28c8a0ccfc533
 
 // Parameters for chart (like this way better)
-var width = 700,
-  height = 700,
+var width = 800,
+  height = 950,
   outerPadding = 100,
   labelPadding = 5,
   chordPadding = 0.03,
@@ -23,6 +23,16 @@ var svg = d3.select(".dependency").append("svg")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"),
     ribbonsG = g.append("g"),
     groupsG = g.append("g");
+
+svg.append("text")
+  .attr("class", "chart_title")
+  .attr("x", 410)
+  .attr("y", 43)
+  .attr("text-anchor", "middle")
+  .style("font-size", "30px")
+  .text("Flow of Cacao Between Orgin and Manufacteure Countries");
+
+
 
 // Import Data
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
@@ -210,32 +220,6 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
 // END dependency chart
 
 // Donut Chart
-                      // var svgWidth = 700;
-                      // var svgHeight = 700;
-
-                      // var margin = {
-                      //   top: 20,
-                      //   right: 40,
-                      //   bottom: 60,
-                      //   left: 100
-                      // };
-
-                      // var width = svgWidth - margin.left - margin.right;
-                      // var height = svgHeight - margin.top - margin.bottom;
-
-                      // // Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
-                      // var svg = d3.select(".chart")
-                      //   .append("svg")
-                      //   .attr("width", svgWidth)
-                      //   .attr("height", svgHeight);
-
-                      // var chartGroup = svg.append("g")
-                      //   .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-                                      // // Import Data
-                                      // d3.json("http://127.0.0.1:5000/donut_top10").then(function(info) {
-                                      //   console.log(info)
-                                      // });
 
 function renderIcons() {
   // Australia
@@ -740,15 +724,15 @@ var xAxis = svg.append("g")
 
     svg.append("text")
     .attr("text-anchor", "end")
-    .attr("x", width/2)
-    .attr("y", height + margin.bottom-10)
+    .attr("x", -margin.top+550)
+    .attr("y", height + margin.bottom-20)
     .text("Company Locations");
     
 
 
 // Add Y axis
 var y = d3.scaleLinear()
-  .domain([1.5, 5])
+  .domain([1.5, 4.5])
   .range([ height, 0]);
 
 svg.append("g")
@@ -758,10 +742,17 @@ svg.append("g")
 svg.append("text")
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")
-    .attr("y", -margin.left+20)
-    .attr("x", -margin.top-100)
+    .attr("y", -margin.left+15)
+    .attr("x", -margin.top-170)
     .text("Rating")
 
+svg.append("g")
+    .append("text")
+    .attr("text-anchor", "middle")
+    .attr("x", -margin.left+500)
+    .attr("y", -margin.top+22)
+    .style("font-size", "30px")
+    .text("Ratings vs. Country Locations")
 
 
 

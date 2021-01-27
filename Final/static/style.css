@@ -18,17 +18,16 @@ body {
 
 .text-center {
   align-content: center;
-  text-align: center;
+  text-align: center !important;
 }
 
 .dependency {
     background-color: white;
-    max-width: 700px;
-    height: 700px;
-    margin-top: 60px;
-    margin-bottom: 50px;
-    /* margin-left: 35px; */
- 
+    width: 840px;
+    height: 900px;
+    margin-top: 50px;
+    margin-bottom: 50px; 
+    padding: 10px;
 }
 
 .chart {
@@ -37,7 +36,7 @@ body {
     background-color: white;
     color: black;
     margin-top: 50px;
-    margin-left: 15px;
+    margin-left: 55px;
     margin-bottom: 50px; 
     padding: 25px;
 }
@@ -48,6 +47,7 @@ body {
     height: 700px;
     margin-top: 50px;
     margin-bottom: 50px; 
+    margin-left: 25px;
   }
   
   .highcharts-figure, .highcharts-data-table table {
@@ -62,7 +62,7 @@ body {
     border: 1px solid #EBEBEB;
     margin: 10px auto;
     text-align: center;
-    width: 90%;
+    width: 80%;
     max-width: auto;
   }
   .highcharts-data-table caption {
@@ -83,5 +83,3 @@ body {
   .highcharts-data-table tr:hover {
     background: #f1f7ff;
   }
-
-  

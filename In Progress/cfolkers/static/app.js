@@ -26,7 +26,7 @@ var svg = d3.select(".dependency").append("svg")
 // Import Data
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
   var array = data.results;
-  console.log(array)
+  // console.log(array)
 
   // Chart starts here
   // D3 layouts, shapes and scales.
@@ -46,6 +46,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
 
     var matrix = generateMatrix(data),
         chords = chord(matrix);
+        console.log(matrix)
 
     color.domain(matrix.map(function (d, i){
       return i;
@@ -201,7 +202,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
 
     return matrix;
   }
-  // console.log(matrix) 
   render(array);
+  
 });
 

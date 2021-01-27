@@ -1,0 +1,24 @@
+body {
+    background-image: url(https://raw.githubusercontent.com/jackie33g/UCI_Project-2/jeriel_p2/In%20Progress/jeriel/chocolate-background.jpg);
+    color: white;
+  }
+  
+  h1 {
+    text-align: center;
+    color: white;
+  }
+  
+  img {
+    box-shadow: 10px 10px 5px rgb(170, 114, 18);
+  }
+  
+  
+  body.dark {
+    background: black;
+    color: white;
+  }
+
+.dependency {
+    background-color: white;
+    box-shadow: 10px 10px 5px rgb(170, 114, 18);
+}

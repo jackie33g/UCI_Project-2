@@ -30,7 +30,7 @@ def retrieve():
             "count": info.sum_num
 
         } for info in information]
-    return {"results": results} # ----> puts resutls in json in flask
+    return {"results": results} # ----> puts results in json in flask
  
     
 if __name__ == '__main__':

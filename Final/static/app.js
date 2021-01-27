@@ -30,7 +30,7 @@ svg.append("text")
   .attr("y", 43)
   .attr("text-anchor", "middle")
   .style("font-size", "30px")
-  .text("Flow of Cacao Between Orgin and Manufacture Countries");
+  .text("Flow of Cacao Between Origin and Manufacture Countries");
 
 
 
@@ -422,7 +422,7 @@ Highcharts.chart('container', {
   },
 
   title: {
-      text: "Top 10 Countries' 70% Cocao Bar Average Ratings",
+      text: "Top 10 Countries' 70% Cacao Bar Average Ratings",
       style: {
           fontSize: '28px'
       }

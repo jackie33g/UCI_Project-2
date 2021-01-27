@@ -1,21 +1,20 @@
 // Reference for chart:  https://bl.ocks.org/curran/8c5bb1e0dd8ea98695d28c8a0ccfc533
 
 // Parameters for chart (like this way better)
-var width = 750,
-  height = 750,
+var width = 960,
+  height = 960,
   outerPadding = 100,
   labelPadding = 5,
   chordPadding = 0.03,
   arcThickness = 20,
-  opacity = 0.6,
+  opacity = 0.5,
   fadedOpacity = 0.02,
-  transitionDuration = 350,
-  transitionRibbonDuration = 100,
+  transitionDuration = 1000,
   outerRadius = width / 2 - outerPadding,
   innerRadius = outerRadius - arcThickness,
   valueFormat = d3.format(",");
 
-var svg = d3.select(".dependency").append("svg")
+var svg = d3.select(".chart").append("svg")
   .attr("width", width)
   .attr("height", height)
   g = svg.append("g")
@@ -26,7 +25,7 @@ var svg = d3.select(".dependency").append("svg")
 // Import Data
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
   var array = data.results;
-  console.log(array)
+  // console.log(array)
 
   // Chart starts here
   // D3 layouts, shapes and scales.
@@ -40,6 +39,11 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
     .outerRadius(outerRadius),
   color = d3.scaleOrdinal()
     .range(d3.schemeCategory20);
+  
+  var popoverOptions = {
+    html : true,
+    template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><div class="popover-content"></div></div>'
+  };
 
   // Renders the given data as a chord diagram.
   function render(data){
@@ -50,12 +54,11 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
     color.domain(matrix.map(function (d, i){
       return i;
     }));
-    
+
     // Render the ribbons.
     ribbonsG.selectAll("path")
         .data(chords)
-      .enter()
-        .append("path")
+      .enter().append("path")
         .attr("class", "ribbon")
         .attr("d", ribbon)
         .style("fill", function(d) {
@@ -65,17 +68,18 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
           return d3.rgb(color(d.source.index)).darker();
         })
         .style("opacity", opacity)
-        .call(ribbonHover)
-        .append("title")
-          .attr("class", "tooltip")
-          .attr("role", "tooltip")
-          .text(textFunction);
-  
-    // Function for text for tooltip.
-    function textFunction(d){
-      var src = matrix.names[d.source.index];
-      var dest = matrix.names[d.target.index];
-      return `${dest} → ${src}: ${d.source.value}`}
+        .on("mouseenter", function(d){
+          var src = matrix.names[d.source.index];
+          var dest = matrix.names[d.target.index];
+          popoverOptions.content = [
+            `<p> ${dest} to ${src}: <br>${d.source.value}</p>`,
+          ].join();
+          $(this).popover(popoverOptions);
+          $(this).popover("show");
+        }) 
+        .on("mouseleave", function (d){
+          $(this).popover("hide");
+        })
 
     // Scaffold the chord groups.
     var groups = groupsG
@@ -97,7 +101,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
         .style("opacity", opacity)
         .call(groupHover);
 
-    // Render the chord group labels and flip.
+    // Render the chord group labels.
     var angle = d3.local(),
         flip = d3.local();
     groups
@@ -127,6 +131,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
   }
 
   // Sets up hover interaction to highlight a chord group.
+  // Used for both the arcs and the text labels.
   function groupHover(selection){
     selection
       .on("mouseover", function (group){
@@ -144,24 +149,6 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
         g.selectAll(".ribbon")
           .transition().duration(transitionDuration)
             .style("opacity", opacity);
-      });
-  }
-
-  function ribbonHover(selection){
-    selection
-      .on("mouseover", function (group){
-        g.selectAll(".ribbon")
-            .filter(function(ribbon) {
-              return (
-                (ribbon.source.index !== group.index) &&
-                (ribbon.target.index !== group.index)
-              );
-            })
-          .transition().duration(transitionRibbonDuration)
-      })
-      .on("mouseout", function (){
-        g.selectAll(".ribbon")
-          .transition().duration(transitionRibbonDuration);
       });
   }
 

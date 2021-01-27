@@ -1,21 +1,20 @@
 // Reference for chart:  https://bl.ocks.org/curran/8c5bb1e0dd8ea98695d28c8a0ccfc533
 
 // Parameters for chart (like this way better)
-var width = 750,
-  height = 750,
+var width = 960,
+  height = 960,
   outerPadding = 100,
   labelPadding = 5,
   chordPadding = 0.03,
   arcThickness = 20,
   opacity = 0.6,
   fadedOpacity = 0.02,
-  transitionDuration = 350,
-  transitionRibbonDuration = 100,
+  transitionDuration = 400,
   outerRadius = width / 2 - outerPadding,
   innerRadius = outerRadius - arcThickness,
   valueFormat = d3.format(",");
 
-var svg = d3.select(".dependency").append("svg")
+var svg = d3.select(".chart").append("svg")
   .attr("width", width)
   .attr("height", height)
   g = svg.append("g")
@@ -26,7 +25,7 @@ var svg = d3.select(".dependency").append("svg")
 // Import Data
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
   var array = data.results;
-  console.log(array)
+  // console.log(array)
 
   // Chart starts here
   // D3 layouts, shapes and scales.
@@ -65,11 +64,13 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
           return d3.rgb(color(d.source.index)).darker();
         })
         .style("opacity", opacity)
-        .call(ribbonHover)
+        // .call(ribbonHover)
         .append("title")
           .attr("class", "tooltip")
           .attr("role", "tooltip")
           .text(textFunction);
+        // .append("a")
+        // .attr("data-tooltip", textFunction);
   
     // Function for text for tooltip.
     function textFunction(d){
@@ -147,23 +148,24 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
       });
   }
 
-  function ribbonHover(selection){
-    selection
-      .on("mouseover", function (group){
-        g.selectAll(".ribbon")
-            .filter(function(ribbon) {
-              return (
-                (ribbon.source.index !== group.index) &&
-                (ribbon.target.index !== group.index)
-              );
-            })
-          .transition().duration(transitionRibbonDuration)
-      })
-      .on("mouseout", function (){
-        g.selectAll(".ribbon")
-          .transition().duration(transitionRibbonDuration);
-      });
-  }
+//   function ribbonHover(selection){
+//     selection
+//       .on("mouseover", function (group){
+//         g.selectAll(".ribbon")
+//             .filter(function(ribbon) {
+//               return (
+//                 (ribbon.source.index !== group.index) &&
+//                 (ribbon.target.index !== group.index)
+//               );
+//             })
+//           .transition().duration(transitionDuration)
+//       })
+//       .on("mouseout", function (){
+//         g.selectAll(".ribbon")
+//           .transition().duration(transitionDuration)
+// ;
+//       });
+//   }
 
   // Transform data for matrix!!!! 
   function generateMatrix(data){

@@ -27,7 +27,7 @@ var svg = d3.select(".dependency").append("svg")
 // Import Data
 d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
   var array = data.results;
-  console.log(array)
+  // console.log(array)
 
   // Chart starts here
   // D3 layouts, shapes and scales.
@@ -47,6 +47,7 @@ d3.json("http://127.0.0.1:5000/dependency_chart").then(function(data) {
 
     var matrix = generateMatrix(data),
         chords = chord(matrix);
+    console.log(matrix) 
 
     color.domain(matrix.map(function (d, i){
       return i;
@@ -257,10 +258,7 @@ function renderIcons() {
 
   // Denmark
   if (!this.series[1].icon) {
-      this.series[1].icon = this.renderer.path(
-          ['M', -8, 0, 'L', 8, 0, 'M', 0, -8, 'L', 8, 0, 0, 8,
-              'M', 8, -8, 'L', 16, 0, 8, 8]
-      )
+      this.series[1].icon = this.renderer.path(['M', 0, 8, 'L', 0, -8, 'M', -8, 0, 'L', 0, -8, 8, 0])
           .attr({
               stroke: '#ffffff',
               'stroke-linecap': 'round',
@@ -440,9 +438,9 @@ Highcharts.chart('container', {
   },
 
   title: {
-      text: 'Top 10 Countries by Rating',
+      text: "Top 10 Countries' 70% Cocao Bar Average Ratings",
       style: {
-          fontSize: '32px'
+          fontSize: '28px'
       }
   },
 
@@ -539,7 +537,6 @@ Highcharts.chart('container', {
     }]
     
 },
-
 
   yAxis: {
       min: 3,
@@ -751,11 +748,13 @@ var xAxis = svg.append("g")
 
 // Add Y axis
 var y = d3.scaleLinear()
-.domain([1.5, 5])
-.range([ height, 0]);
+  .domain([1.5, 5])
+  .range([ height, 0]);
+
 svg.append("g")
-.attr("transform", "translate(50,0)") 
-.call(d3.axisLeft(y))
+  .attr("transform", "translate(50,0)") 
+  .call(d3.axisLeft(y))
+
 svg.append("text")
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")

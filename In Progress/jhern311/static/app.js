@@ -22,7 +22,7 @@ var chartGroup = svg.append("g")
 
 // Import Data
 d3.json("/donut_top10").then(function(info) {
-  console.log(info)
+  console.log("info" +info)
 });
 
 // Uncomment to style it like Apple Watch
